@@ -9,10 +9,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,18 +30,12 @@ public class MainActivity extends AppCompatActivity {
             new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                   Log.d("NET", response);
-                    try {
-                        JSONArray array = new JSONArray(response);
-                        int i;
-                        for (i=0; i<array.length(); i++)
-                        {
-                            JSONObject obj = array.getJSONObject(i);
-                            String s = obj.getString("district");
-                            Log.d("NET", s);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    Log.d("NET", response);
+                    Gson gson = new Gson();
+                    ArrayList<Animal> mylist = gson.fromJson(response, new TypeToken<ArrayList<Animal>>() {}.getType());
+                    for (Animal a : mylist)
+                    {
+                        Log.d("NET", a.district);
                     }
 
                 }
